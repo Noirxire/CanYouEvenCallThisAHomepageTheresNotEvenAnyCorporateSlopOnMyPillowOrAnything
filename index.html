@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fuckass Homepage</title>
+<style>
+  body {
+    background: #111;
+    color: #eee;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+  }
+  a {
+    color: #6cf;
+    text-decoration: none;
+    margin: 0.5em;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  /* left-side container for stacked players */
+  #audioContainer {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    max-height: 90%;
+    overflow-y: auto;
+    width: 300px;
+  }
+  /* song label style */
+  .trackLabel {
+    font-size: 0.9em;
+    margin-bottom: 0.2em;
+    color: #6cf;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* right-side GIF */
+  #jesusGif {
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+<h1>Why do they say "a men". that's just improper grammar.</h1>
+<p>Quick links:</p>
+<a href="https://archive.org" target="_blank">Internet Archive</a>
+<a href="https://www.youtube.com" target="_blank">YouTube</a>
+<a href="https://tuberipper.com/38" target="_blank">TubeRipper</a>
+
+<!-- container for stacked audio players -->
+<div id="audioContainer"></div>
+
+<!-- right-side GIF -->
+<img src="JesusBallin.gif" id="jesusGif">
+
+<script>
+// MANUAL LIST: just add the filename of any .mp3/.wav you drop in the same folder
+const audioFiles = [
+  "Tenebre Rosso Sangue.mp3",
+  "BRODYQUEST.mp3",
+  "KATAMARI.mp3",
+  "Crystallized.mp3",
+  "static.link - metora _stasis222.mp3"
+];
+
+const container = document.getElementById("audioContainer");
+
+audioFiles.forEach(file => {
+  // create a label for the track
+  const label = document.createElement("div");
+  label.textContent = file; // shows filename
+  label.className = "trackLabel";
+  container.appendChild(label);
+
+  // create the audio player
+  const player = document.createElement("audio");
+  player.src = file;
+  player.controls = true;
+  player.autoplay = false; // change to true if you want auto-play
+  player.style.display = "block";
+  container.appendChild(player);
+});
+</script>
+</body>
+</html>

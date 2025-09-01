@@ -33,10 +33,10 @@
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 0.8em;
     max-height: 90%;
     overflow-y: auto;
-    width: 300px;
+    width: 350px;
   }
   /* song label style */
   .trackLabel {
@@ -47,14 +47,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  /* right-side GIF */
-  #jesusGif {
-    position: fixed;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 400px;
+  .trackWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .songGif {
+    width: 100px;
     height: auto;
+    display: none;
   }
 </style>
 </head>
@@ -68,36 +69,48 @@
 <!-- container for stacked audio players -->
 <div id="audioContainer"></div>
 
-<!-- right-side GIF -->
-<img src="JesusBallin.gif" id="jesusGif">
-
 <script>
-// MANUAL LIST: just add the filename of any .mp3/.wav you drop in the same folder
-const audioFiles = [
-  "Tenebre Rosso Sangue.mp3",
-  "BRODYQUEST.mp3",
-  "KATAMARI.mp3",
-  "crystallized.mp3",
-  "static.link - metora _stasis222.mp3"
+const songs = [
+  { file: "Tenebre Rosso Sangue.mp3", gif: "tenebre.gif" },
+  { file: "BRODYQUEST.mp3", gif: "brody.gif" },
+  { file: "KATAMARI.mp3", gif: "katamari.gif" },
+  { file: "crystallized.mp3", gif: "crystal.gif" },
+  { file: "static.link - metora _stasis222.mp3", gif: "stasis.gif" }
 ];
 
 const container = document.getElementById("audioContainer");
 
-audioFiles.forEach(file => {
-  // create a label for the track
-  const label = document.createElement("div");
-  label.textContent = file; // shows filename
-  label.className = "trackLabel";
-  container.appendChild(label);
+songs.forEach(song => {
+  const wrapper = document.createElement("div");
+  wrapper.className = "trackWrapper";
 
-  // create the audio player
+  const label = document.createElement("div");
+  label.textContent = song.file;
+  label.className = "trackLabel";
+
   const player = document.createElement("audio");
-  player.src = file;
+  player.src = song.file;
   player.controls = true;
-  player.autoplay = false; // change to true if you want auto-play
-  player.style.display = "block";
-  container.appendChild(player);
+
+  const gif = document.createElement("img");
+  gif.src = song.gif;
+  gif.className = "songGif";
+
+  player.onplay = () => {
+    // hide all other gifs
+    document.querySelectorAll(".songGif").forEach(i => i.style.display = "none");
+    gif.style.display = "block";
+  };
+  player.onpause = () => {
+    gif.style.display = "none";
+  };
+
+  wrapper.appendChild(label);
+  wrapper.appendChild(player);
+  wrapper.appendChild(gif);
+  container.appendChild(wrapper);
 });
 </script>
 </body>
 </html>
+

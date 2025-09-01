@@ -2,62 +2,68 @@
 <html lang="en">
 <head>
   <link rel="icon" type="image/png" href="favicon.png">
-<meta charset="UTF-8">
-<title>Fuckass Homepage</title>
-<style>
-  body {
-    background: #111;
-    color: #eee;
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    position: relative;
-  }
-  a {
-    color: #6cf;
-    text-decoration: none;
-    margin: 0.5em;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-  /* left-side container for stacked players */
-  #audioContainer {
-    position: fixed;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 0.8em;
-    max-height: 90%;
-    overflow-y: auto;
-    width: 350px;
-  }
-  /* song label style */
-  .trackLabel {
-    font-size: 0.9em;
-    margin-bottom: 0.2em;
-    color: #6cf;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .trackWrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-  }
-  .songGif {
-    width: 100px;
-    height: auto;
-    display: none;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Fuckass Homepage</title>
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+    a {
+      color: #6cf;
+      text-decoration: none;
+      margin: 0.5em;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* left-side container for stacked players */
+    #audioContainer {
+      position: fixed;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      max-height: 90%;
+      overflow-y: auto;
+      width: 320px;
+    }
+    /* song label style */
+    .trackLabel {
+      font-size: 0.9em;
+      margin-bottom: 0.2em;
+      color: #6cf;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* song gif style */
+    .trackGif {
+      display: none;
+      margin-top: 0.3em;
+      max-width: 280px;
+      border-radius: 8px;
+    }
+    /* permanent jesus */
+    #jesusGif {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 400px;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
 <h1>Why do they say "a men". that's just improper grammar.</h1>
@@ -69,8 +75,12 @@
 <!-- container for stacked audio players -->
 <div id="audioContainer"></div>
 
+<!-- right-side permanent jesus -->
+<img src="JesusBallin.gif" id="jesusGif">
+
 <script>
-const songs = [
+// songs and their gifs
+const audioFiles = [
   { file: "Tenebre Rosso Sangue.mp3", gif: "tenebre.gif" },
   { file: "BRODYQUEST.mp3", gif: "brody.gif" },
   { file: "KATAMARI.mp3", gif: "katamari.gif" },
@@ -80,37 +90,40 @@ const songs = [
 
 const container = document.getElementById("audioContainer");
 
-songs.forEach(song => {
+audioFiles.forEach(track => {
   const wrapper = document.createElement("div");
-  wrapper.className = "trackWrapper";
 
+  // label
   const label = document.createElement("div");
-  label.textContent = song.file;
+  label.textContent = track.file;
   label.className = "trackLabel";
-
-  const player = document.createElement("audio");
-  player.src = song.file;
-  player.controls = true;
-
-  const gif = document.createElement("img");
-  gif.src = song.gif;
-  gif.className = "songGif";
-
-  player.onplay = () => {
-    // hide all other gifs
-    document.querySelectorAll(".songGif").forEach(i => i.style.display = "none");
-    gif.style.display = "block";
-  };
-  player.onpause = () => {
-    gif.style.display = "none";
-  };
-
   wrapper.appendChild(label);
+
+  // audio player
+  const player = document.createElement("audio");
+  player.src = track.file;
+  player.controls = true;
   wrapper.appendChild(player);
+
+  // gif
+  const gif = document.createElement("img");
+  gif.src = track.gif;
+  gif.className = "trackGif";
   wrapper.appendChild(gif);
+
+  // events
+  player.addEventListener("play", () => {
+    gif.style.display = "block";
+  });
+  player.addEventListener("pause", () => {
+    gif.style.display = "none";
+  });
+  player.addEventListener("ended", () => {
+    gif.style.display = "none";
+  });
+
   container.appendChild(wrapper);
 });
 </script>
 </body>
 </html>
-
